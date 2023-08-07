@@ -15,16 +15,18 @@ displayReceipies(result.meals[0],true);
 }
 
 function displayReceipies(recepie,isRandom=false){
-    Object.assign(current_Random_Receipies,recepie);
+    Object.assign(current_Random_Receipies, recepie);
+    console.log(recepie.strInstructions);
     //   random_recipe_instructions = current_Random_Receipies.strInstructions
 let meal =document.createElement('div');
 meal.classList.add("meal");
 isRandom?meals.innerHTML=`<span class="random_recipe">random receipe</span>`:""
-    meal.innerHTML=`
+    try {
+        meal.innerHTML=`
 <div class="meal-header">
     <img src=${recepie.strMealThumb} alt="random receipe" id="rand_receipie_img">
 <div class="vertical_info_bar">
-    <button data-mydata="${recepie}" onclick='loadInstructions(current_Random_Receipies)'><i class="fa-solid fa-circle-info"></i></button>
+    <button data-mydata="${JSON.stringify(recepie)}" onclick='loadInstructions(${JSON.stringify(recepie)},this)'><i class="fa-solid fa-circle-info"></i></button>
     <button><a href=${recepie.strYoutube} target="_blank"><i class="fa-brands fa-youtube"></i></a></button>
 </div>
 </div>
@@ -33,7 +35,10 @@ isRandom?meals.innerHTML=`<span class="random_recipe">random receipe</span>`:""
     <button class="fav-meal"><i class="fa-sharp fa-solid fa-heart"></i></button>
 </div>
 `;
-meals.appendChild(meal);
+    } catch (err) {
+        alert("error"+err.message)
+}
+  meals.appendChild(meal);
 let favbtn =  meal.querySelector('.fav-meal');
     favbtn.addEventListener('click',function(){
         favbtn.classList.toggle("actived")
@@ -77,8 +82,12 @@ function applyStyles(elm,width,height,pos,left,top,bottom,right,bgcolor,ptrevent
     // elm.style.pointerEvents=ptrevents?ptrevents:"";
     return elm;
 }
-function loadInstructions(recepie){
+function loadInstructions(recepie, elm) {
+    // console.log(elm.getAttribute("data-mydata"))
+    // Object.assign(current_Random_Receipies, recepie);
+    // console.log(JSON.parse(elm.getAttribute("data-mydata")))
     let meal = recepie;
+        
     // console.log(random_recipe_instructions);
     let overlay = document.createElement('div');
     overlay.classList.add('overlay')
@@ -87,7 +96,7 @@ function loadInstructions(recepie){
     let close=document.createElement("span")
     close.classList.add('overlay_close_btn')
     close.innerText="close";
-    close=applyStyles(close,8,4,"absolute","",0,"",3,'255,255,255','none',null)
+    // close=applyStyles(close,8,4,"absolute","",0,"",3,'255,255,255','none',null)
     close.addEventListener("click",function(){
         document.body.removeChild(overlay);
         document.body.removeChild(close);
