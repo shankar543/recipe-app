@@ -139,7 +139,7 @@ async function getMealBySearch(){
     let queryparam = searchelm.value;
     let response = await fetch('https://www.themealdb.com/api/json/v1/1/search.php?s='+queryparam);
     let result = await response.json()
-    if(result.meals.length){
+    if(result?.meals?.length){
         meals.innerHTML=""
     }
     result.meals.forEach(meal=>{
